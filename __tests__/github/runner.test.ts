@@ -80,9 +80,14 @@ describe('github action runner', () => {
   });
   describe('given that error occurs', () => {
     it('should terminate runner and write error to github logs', () => {
+      const errorMessage = 'error message';
+      jest.spyOn(githubClient, 'createOctokitClient').mockImplementation(() => {
+        throw new Error(errorMessage);
+      });
       const spy = jest.spyOn(actions, 'githubSetFailed').mockImplementation();
       run();
       expect(spy).toBeCalledTimes(1);
+      expect(spy).toBeCalledWith(errorMessage);
     });
   });
 });
