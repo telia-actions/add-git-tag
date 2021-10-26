@@ -6,7 +6,7 @@ import { run } from '@src/github/runner';
 const mockedTagReference = 'ref';
 
 const mockGithubClient = (): any => {
-  const clientSpy = jest.spyOn(githubClient, 'createOctokitCLient').mockImplementation();
+  const clientSpy = jest.spyOn(githubClient, 'createOctokitClient').mockImplementation();
   const addTagSpy = jest.spyOn(githubClient, 'addGitTag').mockImplementation();
   const removeTagSpy = jest.spyOn(githubClient, 'removeGitTag').mockImplementation();
   return { clientSpy, addTagSpy, removeTagSpy };
