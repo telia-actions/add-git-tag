@@ -1,19 +1,19 @@
 import * as actions from '@src/github/actions';
 import * as actionsGithub from '@actions/github';
-import { addGitTag, createOctokitCLient, removeGitTag } from '@src/github/client';
+import { addGitTag, createOctokitClient, removeGitTag } from '@src/github/client';
 
 describe('github helper functions', () => {
   describe('createOctokitCLient method', () => {
     it('should provide create octokit client with given github token', () => {
       const githubToken = 'githubToken';
       const spy = jest.spyOn(actionsGithub, 'getOctokit');
-      createOctokitCLient(githubToken);
+      createOctokitClient(githubToken);
       expect(spy).toBeCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(githubToken);
     });
   });
   describe('octokit client', () => {
-    const client = createOctokitCLient('githubToken');
+    const client = createOctokitClient('githubToken');
     const [owner, repo, sha, ref] = ['owner', 'repo', 'sha', 'ref'];
     beforeEach(() => {
       jest.spyOn(actionsGithub, 'getOctokit');

@@ -2,7 +2,7 @@ import { context, getOctokit } from '@actions/github';
 import { GitHub } from '@actions/github/lib/utils';
 import { githubDebug } from '@src/github/actions';
 
-export const createOctokitCLient = (githubToken: string): InstanceType<typeof GitHub> =>
+export const createOctokitClient = (githubToken: string): InstanceType<typeof GitHub> =>
   getOctokit(githubToken);
 
 export const addGitTag = async (
