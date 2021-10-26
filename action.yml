@@ -1,0 +1,13 @@
+name: Add git tag
+description: Add git tag on current git ref. If tag already exists tag will be moved to current git ref.
+inputs:
+  tag-name:
+    description: Tag name which will be added to git repository
+    required: true
+  should-tag-with-timestamp:
+    description: Add git tag with current timestamp postfix
+    required: false
+    default: "false"
+runs:
+  using: node12
+  main: dist/index.js
