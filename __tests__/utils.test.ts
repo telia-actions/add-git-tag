@@ -1,5 +1,5 @@
 import * as actionsCore from '@actions/core';
-import { getGitCompatibleTimestamp, getGitInputs, getTagRef } from '../src/utils';
+import { getGitCompatibleTimestamp, getGitInputs, getTagRef } from '@src/utils';
 
 describe('utilities helper functions', () => {
   describe('getGitCompatibleTimestamp method', () => {

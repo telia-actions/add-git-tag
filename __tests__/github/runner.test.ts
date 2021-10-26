@@ -1,7 +1,7 @@
-import * as actionsCore from '@actions/core';
-import * as githubClient from '../src/github_client';
-import * as utils from '../src/utils';
-import { run } from '../src/github_runner';
+import * as actions from '@src/github/actions';
+import * as githubClient from '@src/github/client';
+import * as utils from '@src/utils';
+import { run } from '@src/github/runner';
 
 const mockedTagReference = 'ref';
 
@@ -80,7 +80,7 @@ describe('github action runner', () => {
   });
   describe('given that error occurs', () => {
     it('should terminate runner and write error to github logs', () => {
-      const spy = jest.spyOn(actionsCore, 'setFailed').mockImplementation();
+      const spy = jest.spyOn(actions, 'githubSetFailed').mockImplementation();
       run();
       expect(spy).toBeCalledTimes(1);
     });

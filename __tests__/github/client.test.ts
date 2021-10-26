@@ -1,6 +1,6 @@
-import * as actionsCore from '@actions/core';
+import * as actions from '@src/github/actions';
 import * as actionsGithub from '@actions/github';
-import { addGitTag, createOctokitCLient, removeGitTag } from '../src/github_client';
+import { addGitTag, createOctokitCLient, removeGitTag } from '@src/github/client';
 
 describe('github helper functions', () => {
   describe('createOctokitCLient method', () => {
@@ -52,7 +52,7 @@ describe('github helper functions', () => {
       describe('given that error occurs', () => {
         it('should write to github debug log that there is nothing to delete with given ref', async () => {
           jest.spyOn(client.rest.git, 'deleteRef');
-          const spy = jest.spyOn(actionsCore, 'debug').mockImplementation();
+          const spy = jest.spyOn(actions, 'githubDebug').mockImplementation();
           await removeGitTag(ref, client);
           expect(spy).toHaveBeenCalledTimes(1);
           expect(spy).toHaveBeenCalledWith(expect.stringContaining(ref));

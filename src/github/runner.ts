@@ -1,6 +1,6 @@
-import { addGitTag, createOctokitCLient, removeGitTag } from './github_client';
-import { getGitCompatibleTimestamp, getGitInputs, getTagRef } from './utils';
-import { setFailed } from '@actions/core';
+import { addGitTag, createOctokitCLient, removeGitTag } from '@src/github/client';
+import { getGitCompatibleTimestamp, getGitInputs, getTagRef } from '@src/utils';
+import { githubSetFailed } from '@src/github/actions';
 
 export const run = (): void => {
   try {
@@ -14,6 +14,6 @@ export const run = (): void => {
       addGitTag(`${ref}${getGitCompatibleTimestamp()}`, client);
     }
   } catch (error: any) {
-    setFailed(error.message);
+    githubSetFailed(error.message);
   }
 };

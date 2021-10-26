@@ -8274,7 +8274,23 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 9919:
+/***/ 2952:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.githubSetFailed = exports.githubDebug = void 0;
+const core_1 = __webpack_require__(2186);
+const githubDebug = (message) => core_1.debug(message);
+exports.githubDebug = githubDebug;
+const githubSetFailed = (message) => core_1.setFailed(message);
+exports.githubSetFailed = githubSetFailed;
+
+
+/***/ }),
+
+/***/ 7047:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -8291,7 +8307,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.removeGitTag = exports.addGitTag = exports.createOctokitCLient = void 0;
 const github_1 = __webpack_require__(5438);
-const core_1 = __webpack_require__(2186);
+const actions_1 = __webpack_require__(2952);
 const createOctokitCLient = (githubToken) => github_1.getOctokit(githubToken);
 exports.createOctokitCLient = createOctokitCLient;
 const addGitTag = (ref, client) => __awaiter(void 0, void 0, void 0, function* () {
@@ -8312,7 +8328,7 @@ const removeGitTag = (ref, client) => __awaiter(void 0, void 0, void 0, function
         });
     }
     catch (_a) {
-        core_1.debug(`Nothing to delete: "${ref}" tag does not exist`);
+        actions_1.githubDebug(`Failed to delete "${ref}" tag`);
     }
 });
 exports.removeGitTag = removeGitTag;
@@ -8320,30 +8336,30 @@ exports.removeGitTag = removeGitTag;
 
 /***/ }),
 
-/***/ 6325:
+/***/ 2764:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
-const github_client_1 = __webpack_require__(9919);
+const client_1 = __webpack_require__(7047);
 const utils_1 = __webpack_require__(1314);
-const core_1 = __webpack_require__(2186);
+const actions_1 = __webpack_require__(2952);
 const run = () => {
     try {
         const inputs = ['tag-name', 'should-tag-with-timestamp', 'github-token'];
         const [tagName, shouldTagWithTimestamp, githubToken] = utils_1.getGitInputs(inputs);
         const ref = utils_1.getTagRef(tagName);
-        const client = github_client_1.createOctokitCLient(githubToken);
-        github_client_1.removeGitTag(ref, client);
-        github_client_1.addGitTag(ref, client);
+        const client = client_1.createOctokitCLient(githubToken);
+        client_1.removeGitTag(ref, client);
+        client_1.addGitTag(ref, client);
         if (shouldTagWithTimestamp === 'true') {
-            github_client_1.addGitTag(`${ref}${utils_1.getGitCompatibleTimestamp()}`, client);
+            client_1.addGitTag(`${ref}${utils_1.getGitCompatibleTimestamp()}`, client);
         }
     }
     catch (error) {
-        core_1.setFailed(error.message);
+        actions_1.githubSetFailed(error.message);
     }
 };
 exports.run = run;
@@ -8357,8 +8373,8 @@ exports.run = run;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const github_runner_1 = __webpack_require__(6325);
-github_runner_1.run();
+const runner_1 = __webpack_require__(2764);
+runner_1.run();
 
 
 /***/ }),

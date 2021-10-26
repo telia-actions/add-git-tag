@@ -1,6 +1,6 @@
 import { context, getOctokit } from '@actions/github';
 import { GitHub } from '@actions/github/lib/utils';
-import { debug } from '@actions/core';
+import { githubDebug } from '@src/github/actions';
 
 export const createOctokitCLient = (githubToken: string): InstanceType<typeof GitHub> =>
   getOctokit(githubToken);
@@ -28,6 +28,6 @@ export const removeGitTag = async (
       ref,
     });
   } catch {
-    debug(`Nothing to delete: "${ref}" tag does not exist`);
+    githubDebug(`Failed to delete "${ref}" tag`);
   }
 };
