@@ -1,5 +1,5 @@
 import * as actionsCore from '@actions/core';
-import { getGitCompatibleTimestamp, getGitInputs, getTagRef } from '@src/utils';
+import { getGitCompatibleTimestamp, getGitInputs, getTag, getTagRef } from '@src/utils';
 
 describe('utilities helper functions', () => {
   describe('getGitCompatibleTimestamp method', () => {
@@ -28,6 +28,12 @@ describe('utilities helper functions', () => {
     it('should concatinate tag name with git ref prefix', () => {
       const tagName = 'mockedTagName';
       expect(getTagRef(tagName)).toEqual(`refs/tags/${tagName}`);
+    });
+  });
+  describe('getTag method', () => {
+    it('should concatinate tag name with git tag prefix', () => {
+      const tagName = 'mockedTagName';
+      expect(getTag(tagName)).toEqual(`tags/${tagName}`);
     });
   });
 });

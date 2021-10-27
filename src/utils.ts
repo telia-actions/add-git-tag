@@ -8,4 +8,6 @@ export const getGitCompatibleTimestamp = (): string =>
 
 export const getTagRef = (tagName: string): string => `refs/tags/${tagName}`;
 
+export const getTag = (tagName: string): string => `tags/${tagName}`;
+
 export const getGitInputs = (inputs: string[]): string[] => inputs.map((input) => getInput(input));

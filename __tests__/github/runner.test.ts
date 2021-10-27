@@ -3,7 +3,8 @@ import * as githubClient from '@src/github/client';
 import * as utils from '@src/utils';
 import { run } from '@src/github/runner';
 
-const mockedTagReference = 'ref';
+const mockedTagReference = 'ref/tags/';
+const mockedTag = 'tags/';
 
 const mockGithubClient = (): any => {
   const clientSpy = jest.spyOn(githubClient, 'createOctokitClient').mockImplementation();
@@ -35,6 +36,7 @@ describe('github action runner', () => {
       describe('given that tag reference exists', () => {
         beforeEach(() => {
           jest.spyOn(utils, 'getTagRef').mockReturnValue(mockedTagReference);
+          jest.spyOn(utils, 'getTag').mockReturnValue(mockedTag);
         });
         it('should create client with githubToken', async () => {
           const { clientSpy } = mockGithubClient();
@@ -46,10 +48,7 @@ describe('github action runner', () => {
           const { removeTagSpy, clientSpy } = mockGithubClient();
           await run();
           expect(removeTagSpy).toHaveBeenCalledTimes(1);
-          expect(removeTagSpy).toHaveBeenCalledWith(
-            mockedTagReference,
-            clientSpy.getMockImplementation()
-          );
+          expect(removeTagSpy).toHaveBeenCalledWith(mockedTag, clientSpy.getMockImplementation());
         });
         it('should add tag ref using client', async () => {
           const { addTagSpy, clientSpy } = mockGithubClient();

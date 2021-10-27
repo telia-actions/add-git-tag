@@ -1,5 +1,5 @@
 import { addGitTag, createOctokitClient, removeGitTag } from '@src/github/client';
-import { getGitCompatibleTimestamp, getGitInputs, getTagRef } from '@src/utils';
+import { getGitCompatibleTimestamp, getGitInputs, getTag, getTagRef } from '@src/utils';
 import { githubSetFailed } from '@src/github/actions';
 
 export const run = async (): Promise<void> => {
@@ -7,8 +7,9 @@ export const run = async (): Promise<void> => {
     const inputs = ['tag-name', 'should-tag-with-timestamp', 'github-token'];
     const [tagName, shouldTagWithTimestamp, githubToken] = getGitInputs(inputs);
     const ref = getTagRef(tagName);
+    const tag = getTag(tagName);
     const client = createOctokitClient(githubToken);
-    await removeGitTag(ref, client);
+    await removeGitTag(tag, client);
     await addGitTag(ref, client);
     if (shouldTagWithTimestamp === 'true') {
       await addGitTag(`${ref}${getGitCompatibleTimestamp()}`, client);

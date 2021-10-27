@@ -8360,8 +8360,9 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         const inputs = ['tag-name', 'should-tag-with-timestamp', 'github-token'];
         const [tagName, shouldTagWithTimestamp, githubToken] = utils_1.getGitInputs(inputs);
         const ref = utils_1.getTagRef(tagName);
+        const tag = utils_1.getTag(tagName);
         const client = client_1.createOctokitClient(githubToken);
-        yield client_1.removeGitTag(ref, client);
+        yield client_1.removeGitTag(tag, client);
         yield client_1.addGitTag(ref, client);
         if (shouldTagWithTimestamp === 'true') {
             yield client_1.addGitTag(`${ref}${utils_1.getGitCompatibleTimestamp()}`, client);
@@ -8394,7 +8395,7 @@ runner_1.run();
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getGitInputs = exports.getTagRef = exports.getGitCompatibleTimestamp = void 0;
+exports.getGitInputs = exports.getTag = exports.getTagRef = exports.getGitCompatibleTimestamp = void 0;
 const core_1 = __webpack_require__(2186);
 const getGitCompatibleTimestamp = () => `_${new Date()
     .toISOString()
@@ -8403,6 +8404,8 @@ const getGitCompatibleTimestamp = () => `_${new Date()
 exports.getGitCompatibleTimestamp = getGitCompatibleTimestamp;
 const getTagRef = (tagName) => `refs/tags/${tagName}`;
 exports.getTagRef = getTagRef;
+const getTag = (tagName) => `tags/${tagName}`;
+exports.getTag = getTag;
 const getGitInputs = (inputs) => inputs.map((input) => core_1.getInput(input));
 exports.getGitInputs = getGitInputs;
 
