@@ -8337,31 +8337,40 @@ exports.removeGitTag = removeGitTag;
 /***/ }),
 
 /***/ 2764:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const client_1 = __webpack_require__(7047);
 const utils_1 = __webpack_require__(1314);
 const actions_1 = __webpack_require__(2952);
-const run = () => {
+const run = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const inputs = ['tag-name', 'should-tag-with-timestamp', 'github-token'];
         const [tagName, shouldTagWithTimestamp, githubToken] = utils_1.getGitInputs(inputs);
         const ref = utils_1.getTagRef(tagName);
         const client = client_1.createOctokitClient(githubToken);
-        client_1.removeGitTag(ref, client);
-        client_1.addGitTag(ref, client);
+        yield client_1.removeGitTag(ref, client);
+        yield client_1.addGitTag(ref, client);
         if (shouldTagWithTimestamp === 'true') {
-            client_1.addGitTag(`${ref}${utils_1.getGitCompatibleTimestamp()}`, client);
+            yield client_1.addGitTag(`${ref}${utils_1.getGitCompatibleTimestamp()}`, client);
         }
     }
     catch (error) {
         actions_1.githubSetFailed(error.message);
     }
-};
+});
 exports.run = run;
 
 
