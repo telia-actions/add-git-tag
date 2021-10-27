@@ -8305,11 +8305,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.removeGitTag = exports.addGitTag = exports.createOctokitCLient = void 0;
+exports.removeGitTag = exports.addGitTag = exports.createOctokitClient = void 0;
 const github_1 = __webpack_require__(5438);
 const actions_1 = __webpack_require__(2952);
-const createOctokitCLient = (githubToken) => github_1.getOctokit(githubToken);
-exports.createOctokitCLient = createOctokitCLient;
+const createOctokitClient = (githubToken) => github_1.getOctokit(githubToken);
+exports.createOctokitClient = createOctokitClient;
 const addGitTag = (ref, client) => __awaiter(void 0, void 0, void 0, function* () {
     yield client.rest.git.createRef({
         owner: github_1.context.repo.owner,
@@ -8351,7 +8351,7 @@ const run = () => {
         const inputs = ['tag-name', 'should-tag-with-timestamp', 'github-token'];
         const [tagName, shouldTagWithTimestamp, githubToken] = utils_1.getGitInputs(inputs);
         const ref = utils_1.getTagRef(tagName);
-        const client = client_1.createOctokitCLient(githubToken);
+        const client = client_1.createOctokitClient(githubToken);
         client_1.removeGitTag(ref, client);
         client_1.addGitTag(ref, client);
         if (shouldTagWithTimestamp === 'true') {
