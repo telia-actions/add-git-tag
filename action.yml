@@ -4,6 +4,9 @@ inputs:
   tag-name:
     description: Tag name which will be added to git repository
     required: true
+  commit-sha:
+    description: SHA of the commit to which tag will be added
+    required: true
   should-tag-with-timestamp:
     description: Add git tag with current timestamp postfix
     required: false

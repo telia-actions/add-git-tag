@@ -7,13 +7,14 @@ export const createOctokitClient = (githubToken: string): InstanceType<typeof Gi
 
 export const addGitTag = async (
   ref: string,
+  sha: string,
   client: InstanceType<typeof GitHub>
 ): Promise<void> => {
   await client.rest.git.createRef({
     owner: context.repo.owner,
     repo: context.repo.repo,
     ref,
-    sha: context.sha,
+    sha,
   });
 };
 
