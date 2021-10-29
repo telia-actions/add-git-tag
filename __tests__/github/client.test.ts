@@ -8,8 +8,8 @@ describe('github helper functions', () => {
       const githubToken = 'githubToken';
       const spy = jest.spyOn(actionsGithub, 'getOctokit');
       createOctokitClient(githubToken);
-      expect(spy).toBeCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(githubToken);
+      expect(spy).toBeCalledTimes(1);
     });
   });
   describe('octokit client', () => {
@@ -21,12 +21,11 @@ describe('github helper functions', () => {
         owner,
         repo,
       });
-      actionsGithub.context.sha = sha;
     });
     describe('addGitTag method', () => {
-      it('should send rest call to git to create reference with given ref', async () => {
+      it('should send rest call to git to create reference with given ref on specific sha', async () => {
         const spy = jest.spyOn(client.rest.git, 'createRef').mockImplementation();
-        await addGitTag(ref, client);
+        await addGitTag(ref, sha, client);
         expect(spy).toBeCalledTimes(1);
         expect(spy).toHaveBeenCalledWith({
           owner,

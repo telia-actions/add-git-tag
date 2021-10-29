@@ -5,6 +5,7 @@ import { run } from '@src/github/runner';
 
 const mockedTagReference = 'ref/tags/';
 const mockedTag = 'tags/';
+const mockedSha = '01234567890';
 
 const mockGithubClient = (): any => {
   const clientSpy = jest.spyOn(githubClient, 'createOctokitClient').mockImplementation();
@@ -15,23 +16,30 @@ const mockGithubClient = (): any => {
 
 describe('github action runner', () => {
   describe('given that the error does not occur', () => {
-    it('should get 3 required inputs from github', async () => {
+    it('should get 4 required inputs from github', async () => {
       mockGithubClient();
       const spy = jest.spyOn(utils, 'getGitInputs');
       await run();
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(['tag-name', 'should-tag-with-timestamp', 'github-token']);
+      expect(spy).toHaveBeenCalledWith([
+        'tag-name',
+        'commit-sha',
+        'should-tag-with-timestamp',
+        'github-token',
+      ]);
     });
     describe('given that inputs provided', () => {
       beforeEach(() => {
-        jest.spyOn(utils, 'getGitInputs').mockReturnValue(['tag-name', 'false', 'github-token']);
+        jest
+          .spyOn(utils, 'getGitInputs')
+          .mockReturnValue([mockedTag, mockedSha, 'false', 'github-token']);
       });
       it('should get tag reference with given tag name ', async () => {
         mockGithubClient();
         const spy = jest.spyOn(utils, 'getTagRef');
         await run();
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(spy).toHaveBeenCalledWith('tag-name');
+        expect(spy).toHaveBeenCalledWith(mockedTag);
       });
       describe('given that tag reference exists', () => {
         beforeEach(() => {
@@ -56,6 +64,7 @@ describe('github action runner', () => {
           expect(addTagSpy).toHaveBeenCalledTimes(1);
           expect(addTagSpy).toHaveBeenCalledWith(
             mockedTagReference,
+            mockedSha,
             clientSpy.getMockImplementation()
           );
         });
@@ -64,7 +73,9 @@ describe('github action runner', () => {
     describe('given that inputs provided and tag with timestamp required', () => {
       it('should add tag ref with timestamp using client', async () => {
         const timestamp = 'timestamp';
-        jest.spyOn(utils, 'getGitInputs').mockReturnValue(['tag-name', 'true', 'github-token']);
+        jest
+          .spyOn(utils, 'getGitInputs')
+          .mockReturnValue([mockedTag, mockedSha, 'true', 'github-token']);
         jest.spyOn(utils, 'getGitCompatibleTimestamp').mockReturnValue(timestamp);
         jest.spyOn(utils, 'getTagRef').mockReturnValue(mockedTagReference);
         const { addTagSpy, clientSpy } = mockGithubClient();
@@ -72,6 +83,7 @@ describe('github action runner', () => {
         expect(addTagSpy).toHaveBeenNthCalledWith(
           2,
           `${mockedTagReference}${timestamp}`,
+          mockedSha,
           clientSpy.getMockImplementation()
         );
       });
