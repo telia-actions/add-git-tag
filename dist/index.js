@@ -8310,12 +8310,12 @@ const github_1 = __webpack_require__(5438);
 const actions_1 = __webpack_require__(2952);
 const createOctokitClient = (githubToken) => github_1.getOctokit(githubToken);
 exports.createOctokitClient = createOctokitClient;
-const addGitTag = (ref, client) => __awaiter(void 0, void 0, void 0, function* () {
+const addGitTag = (ref, sha, client) => __awaiter(void 0, void 0, void 0, function* () {
     yield client.rest.git.createRef({
         owner: github_1.context.repo.owner,
         repo: github_1.context.repo.repo,
         ref,
-        sha: github_1.context.sha,
+        sha,
     });
 });
 exports.addGitTag = addGitTag;
@@ -8357,15 +8357,15 @@ const utils_1 = __webpack_require__(1314);
 const actions_1 = __webpack_require__(2952);
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const inputs = ['tag-name', 'should-tag-with-timestamp', 'github-token'];
-        const [tagName, shouldTagWithTimestamp, githubToken] = utils_1.getGitInputs(inputs);
+        const inputs = ['tag-name', 'commit-sha', 'should-tag-with-timestamp', 'github-token'];
+        const [tagName, commitSha, shouldTagWithTimestamp, githubToken] = utils_1.getGitInputs(inputs);
         const ref = utils_1.getTagRef(tagName);
         const tag = utils_1.getTag(tagName);
         const client = client_1.createOctokitClient(githubToken);
         yield client_1.removeGitTag(tag, client);
-        yield client_1.addGitTag(ref, client);
+        yield client_1.addGitTag(ref, commitSha, client);
         if (shouldTagWithTimestamp === 'true') {
-            yield client_1.addGitTag(`${ref}${utils_1.getGitCompatibleTimestamp()}`, client);
+            yield client_1.addGitTag(`${ref}${utils_1.getGitCompatibleTimestamp()}`, commitSha, client);
         }
     }
     catch (error) {
