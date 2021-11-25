@@ -25,4 +25,5 @@ jobs:
         uses: ./
         with:
           tag-name: e2e-test
+          should-tag-with-timestamp: true
           commit-sha: ${{ github.sha }}
